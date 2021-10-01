@@ -1,0 +1,7 @@
+---
+title: "Homework 2"
+author: "Philip Kim"
+date: "10/1/2021"
+output: github_document
+---
+
