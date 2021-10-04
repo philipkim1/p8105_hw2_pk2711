@@ -19,7 +19,7 @@ library(readxl)
 
 ```{r}
 trashwheel_df = read_excel(
-  "data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
+  "./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
   sheet = 1,
   range = "A2:N406") %>% 
   janitor::clean_names() %>% 
@@ -33,7 +33,7 @@ trashwheel_df = read_excel(
 
 ```{r}
 precipitation_2018 = read_excel(
-  "data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
+  "./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
   sheet = 5,
   skip = 1) %>%
   drop_na(Month) %>% 
@@ -45,7 +45,7 @@ precipitation_2018 = read_excel(
 
 ```{r}
 precipitation_2019 = read_excel(
-  "data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
+  "./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
   sheet = 4,
   skip = 1) %>% 
   drop_na() %>% 
@@ -71,5 +71,42 @@ precipitation_combined =
 
 # Problem 2
 
+## Clean pols-month data 
 
+```{r}
+politician_df = read.csv("./data/fivethirtyeight_datasets/pols-month.csv") %>% 
+  separate(mon, c("year", "month", "day"), convert = TRUE) %>% 
+  mutate(
+    month = month.name[month],
+    president = case_when(prez_gop == "1" ~ "gop", prez_dem == "1" ~ "dem")) %>%  
+  select(-prez_gop, -prez_dem, -day)
+```
+
+
+## Clean snp data
+
+```{r}
+snp_df = read.csv("./data/fivethirtyeight_datasets/snp.csv") %>% 
+  separate(date, c("month", "day", "year"), convert = TRUE) %>% 
+  mutate(
+    month = factor(month.name[month], levels = month.name),
+    year = if_else(year > 15, year + 1900, year + 2000)) %>% 
+  arrange(year, month) %>% 
+  select(year, month, close)
+```
+
+
+## Clean unemployment data
+
+```{r}
+unemployment_df = read.csv("./data/fivethirtyeight_datasets/unemployment.csv") %>% 
+  janitor::clean_names()
+
+unemployment_tidy_df = 
+  pivot_longer(
+    unemployment_df,
+    jan:dec,
+    names_to = "month",
+    values_to = "unemployment_perc")
+```
 
