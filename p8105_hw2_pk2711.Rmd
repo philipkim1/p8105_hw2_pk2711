@@ -2,6 +2,74 @@
 title: "Homework 2"
 author: "Philip Kim"
 date: "10/1/2021"
-output: github_document
+output: 
+  github_document:
+    toc: true
+    toc_depth: 6
 ---
+
+```{r, message = FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+# Problem 1
+
+## Read/Clean Mr. Trash Wheel Dataset
+
+```{r}
+trashwheel_df = read_excel(
+  "data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
+  sheet = 1,
+  range = "A2:N406") %>% 
+  janitor::clean_names() %>% 
+  drop_na(dumpster) %>% 
+  mutate(sports_balls = round(sports_balls, digits = 0))
+```
+
+## Clean Precipitation Data for 2018 and 2019
+
+### Precipitation Data for 2018
+
+```{r}
+precipitation_2018 = read_excel(
+  "data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
+  sheet = 5,
+  skip = 1) %>%
+  drop_na(Month) %>% 
+  mutate(year = "2018")
+```
+
+
+### Precipitation Data for 2019
+
+```{r}
+precipitation_2019 = read_excel(
+  "data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
+  sheet = 4,
+  skip = 1) %>% 
+  drop_na() %>% 
+  mutate(year = "2019")
+```
+
+
+### Combining Precipitation Data
+
+```{r}
+precipitation_combined = 
+  bind_rows(precipitation_2018, precipitation_2019) %>% 
+  janitor::clean_names() %>% 
+  relocate(year) %>% 
+  rename(total_in = total) %>% 
+  mutate(month = month.name[month])
+```
+
+
+## Data Observations Paragraph
+
+
+
+# Problem 2
+
+
 
