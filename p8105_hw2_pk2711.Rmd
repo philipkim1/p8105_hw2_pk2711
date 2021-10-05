@@ -99,14 +99,37 @@ snp_df = read.csv("./data/fivethirtyeight_datasets/snp.csv") %>%
 ## Clean unemployment data
 
 ```{r}
-unemployment_df = read.csv("./data/fivethirtyeight_datasets/unemployment.csv") %>% 
-  janitor::clean_names()
+unemployment_df = read.csv("./data/fivethirtyeight_datasets/unemployment.csv")
 
 unemployment_tidy_df = 
   pivot_longer(
     unemployment_df,
-    jan:dec,
+    Jan:Dec,
     names_to = "month",
-    values_to = "unemployment_perc")
+    values_to = "unemployment_perc") %>% 
+  janitor::clean_names() %>% 
+  mutate(month = match(month, month.abb),
+         month = month.name[month])
+```
+
+
+## Join Datasets
+
+```{r}
+snp_pols_df = 
+  left_join(politician_df, snp_df, by = c("year", "month"))
+
+snp_pols_unemp_df =
+  left_join(snp_pols_df, unemployment_tidy_df, by = c("year", "month"))
+```
+
+## Dataset Description
+
+
+
+# Problem 3
+
+```{r}
+
 ```
 
