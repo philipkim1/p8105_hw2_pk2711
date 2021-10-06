@@ -129,7 +129,60 @@ snp_pols_unemp_df =
 
 # Problem 3
 
-```{r}
+## Tidying popularity of baby names dataset
 
+```{r}
+baby_name_df = read.csv("./data/Popular_Baby_Names.csv") %>% 
+  janitor::clean_names() %>% 
+  rename(childs_first_name = child_s_first_name) %>% 
+  mutate(
+    gender = str_to_lower(gender),
+    childs_first_name = str_to_lower(childs_first_name),
+    ethnicity = str_to_lower(ethnicity),
+    ethnicity = recode(ethnicity,
+                   "asian and paci" = "asian and pacific islander",
+                   "black non hisp" = "black non hispanic",
+                   "white non hisp" = "white non hispanic")) %>% 
+  distinct()
+```
+
+
+## Popularity of name "Olivia"
+
+```{r}
+olivia_pop_df = baby_name_df %>% 
+  filter(childs_first_name == "olivia") %>% 
+  pivot_wider(
+    names_from = "year_of_birth",
+    values_from = "rank") %>% 
+  select(-gender, -childs_first_name, -count) %>% 
+  relocate(ethnicity, "2011", "2012", "2013", "2014", "2015")
+```
+
+
+## Male name popularity
+
+```{r}
+boy_pop_df = baby_name_df %>% 
+  filter(
+    gender == "male",
+    rank == "1") %>% 
+  pivot_wider(
+    names_from = "year_of_birth",
+    values_from = "childs_first_name") %>% 
+  select(-count, -gender, -rank) %>% 
+  relocate(ethnicity, "2011", "2012", "2013", "2014", "2015")
+```
+
+
+## 2016 White non-hispanic male children plot 
+
+```{r}
+male_2016_df = baby_name_df %>% 
+  filter(gender == "male",
+         ethnicity == "white non hispanic",
+         year_of_birth == "2016")
+
+ggplot(male_2016_df, aes(x = rank, y = count)) + labs(x = "Popularity Rank of Name", y = "Number of Children with Respective Name") + ggtitle("Name Popularity in Male, White \nNon-Hispanic Children Born in 2016") + theme(plot.title = element_text(hjust = 0.5)) + geom_point()
 ```
 
