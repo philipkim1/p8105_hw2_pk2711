@@ -73,8 +73,8 @@ precipitation_combined =
 
 ## Clean pols-month data 
 
-```{r}
-politician_df = read.csv("./data/fivethirtyeight_datasets/pols-month.csv") %>% 
+```{r, message = FALSE}
+politician_df = read_csv("./data/fivethirtyeight_datasets/pols-month.csv") %>% 
   separate(mon, c("year", "month", "day"), convert = TRUE) %>% 
   mutate(
     month = month.name[month],
@@ -85,8 +85,8 @@ politician_df = read.csv("./data/fivethirtyeight_datasets/pols-month.csv") %>%
 
 ## Clean snp data
 
-```{r}
-snp_df = read.csv("./data/fivethirtyeight_datasets/snp.csv") %>% 
+```{r message = FALSE}
+snp_df = read_csv("./data/fivethirtyeight_datasets/snp.csv") %>% 
   separate(date, c("month", "day", "year"), convert = TRUE) %>% 
   mutate(
     month = factor(month.name[month], levels = month.name),
@@ -98,8 +98,8 @@ snp_df = read.csv("./data/fivethirtyeight_datasets/snp.csv") %>%
 
 ## Clean unemployment data
 
-```{r}
-unemployment_df = read.csv("./data/fivethirtyeight_datasets/unemployment.csv")
+```{r message = FALSE}
+unemployment_df = read_csv("./data/fivethirtyeight_datasets/unemployment.csv")
 
 unemployment_tidy_df = 
   pivot_longer(
@@ -131,10 +131,9 @@ snp_pols_unemp_df =
 
 ## Tidying popularity of baby names dataset
 
-```{r}
-baby_name_df = read.csv("./data/Popular_Baby_Names.csv") %>% 
+```{r message = FALSE}
+baby_name_df = read_csv("./data/Popular_Baby_Names.csv") %>% 
   janitor::clean_names() %>% 
-  rename(childs_first_name = child_s_first_name) %>% 
   mutate(
     gender = str_to_lower(gender),
     childs_first_name = str_to_lower(childs_first_name),
