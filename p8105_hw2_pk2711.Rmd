@@ -182,6 +182,13 @@ male_2016_df = baby_name_df %>%
          ethnicity == "white non hispanic",
          year_of_birth == "2016")
 
-ggplot(male_2016_df, aes(x = rank, y = count)) + labs(x = "Popularity Rank of Name", y = "Number of Children with Respective Name") + ggtitle("Name Popularity in Male, White \nNon-Hispanic Children Born in 2016") + theme(plot.title = element_text(hjust = 0.5)) + geom_point()
+ggplot(male_2016_df, aes(x = rank, y = count)) + 
+  labs(
+    title = "Name Popularity in Male, White \nNon-Hispanic Children Born in 2016",
+    x = "Popularity Rank of Name", 
+    y = "Number of Children with Respective Name") + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  geom_point()
 ```
 
