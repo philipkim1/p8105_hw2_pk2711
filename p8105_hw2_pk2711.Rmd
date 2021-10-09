@@ -200,9 +200,10 @@ kable(boy_pop_df, caption = "Most popular name among male children over time")
 
 ```{r}
 male_2016_df = baby_name_df %>% 
-  filter(gender == "male",
-         ethnicity == "white non hispanic",
-         year_of_birth == "2016")
+  filter(
+    gender == "male",
+    ethnicity == "white non hispanic",
+    year_of_birth == "2016")
 
 ggplot(male_2016_df, aes(x = rank, y = count)) + 
   labs(
